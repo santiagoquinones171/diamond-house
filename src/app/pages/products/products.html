@@ -1,0 +1,131 @@
+<div class="products-container">
+  <!-- Hero Section with Particles -->
+  <section class="products-hero" data-section="hero">
+    <div class="particles">
+      <span class="particle" *ngFor="let p of particles" [style.left.%]="p.x" [style.top.%]="p.y"></span>
+    </div>
+    <div class="hero-content" *ngIf="isVisible.hero" @fadeInScale>
+      <h1 class="glowing-title">Nuestra Colección Exclusiva</h1>
+      <p class="hero-subtitle">Descubre piezas únicas que capturan la esencia de la elegancia</p>
+      
+      <!-- Search Bar -->
+      <div class="search-container">
+        <input 
+          type="text" 
+          placeholder="Buscar joyas..." 
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+          class="search-input"
+        />
+        <span class="search-icon">🔍</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter Section -->
+  <section class="filter-section" data-section="filter">
+    <div class="filter-container" *ngIf="isVisible.filter" @slideInFromTop>
+      <button 
+        class="filter-btn" 
+        *ngFor="let category of categories; let i = index" 
+        [class.active]="selectedCategory === category"
+        (click)="filterProducts(category)"
+        [style.animation-delay.ms]="i * 80">
+        {{category}}
+      </button>
+    </div>
+  </section>
+
+  <!-- Products Grid with Advanced Animations -->
+  <section class="products-section" data-section="products">
+    <!-- No results message -->
+    <div class="no-results" *ngIf="filteredProducts.length === 0">
+      <p>No se encontraron productos que coincidan con tu búsqueda</p>
+    </div>
+    
+    <div class="products-grid" *ngIf="isVisible.products && filteredProducts.length > 0" @cardStagger>
+      <div 
+        class="product-card" 
+        *ngFor="let product of filteredProducts; let i = index">
+        
+        <div class="card-inner" [class.flipped]="product.flipped">
+          <!-- Front of Card -->
+          <div class="card-front">
+            <div class="product-image-container">
+              <div class="image-glow"></div>
+              <div class="product-image">
+                <img [src]="product.icon" [alt]="product.name" class="product-img">
+              </div>
+              <div class="floating-badge">Nuevo</div>
+            </div>
+            
+            <div class="product-info">
+              <h3 class="product-name">{{product.name}}</h3>
+              <p class="product-description">{{product.description}}</p>
+              <div class="product-rating">
+                <span class="star" *ngFor="let star of [1,2,3,4,5]">⭐</span>
+              </div>
+              <div class="product-footer">
+                <span class="product-price">{{product.price}}</span>
+                <button class="btn-quick-view" (click)="toggleFlip(product)">
+                  <span class="btn-icon"></span>
+                  Ver más
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Back of Card -->
+          <div class="card-back">
+            <button class="btn-close" (click)="toggleFlip(product)">✕</button>
+            <h3>{{product.name}}</h3>
+            <div class="details-list">
+              <div class="detail-item">
+                <span class="detail-icon">💎</span>
+                <span>Material: Oro 18k</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-icon">✨</span>
+                <span>Piedras: Diamantes</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-icon">📏</span>
+                <span>Tamaño: Ajustable</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-icon">🎁</span>
+                <span>Incluye estuche</span>
+              </div>
+            </div>
+            <button class="btn-add-cart">
+              <span class="cart-icon">🛒</span>
+              Agregar al Carrito
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Product with 3D Effect -->
+  <section class="featured-section" data-section="featured">
+    <div class="featured-container" *ngIf="isVisible.featured">
+      <div class="featured-image" @slideInLeft>
+        <div class="rotating-ring">
+          <img src="assets/images/ia1.png" alt="Anillo Imperial" class="ring-img">
+        </div>
+      </div>
+      <div class="featured-content" @slideInRight>
+        <span class="featured-tag">Producto Destacado</span>
+        <h2>Anillo de Compromiso Imperial</h2>
+        <p>Una pieza magistral que combina tradición y modernidad. Diseñado con diamantes de máxima pureza y oro de 24k.</p>
+        <ul class="featured-features">
+          <li><span class="feature-check">✓</span> Certificado de autenticidad</li>
+          <li><span class="feature-check">✓</span> Garantía de por vida</li>
+          <li><span class="feature-check">✓</span> Diseño exclusivo</li>
+        </ul>
+        <button class="btn-featured">Conocer más</button>
+      </div>
+    </div>
+  </section>
+</div>

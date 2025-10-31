@@ -1,0 +1,132 @@
+<div class="about-container">
+  <!-- Hero Section -->
+  <section class="about-hero" data-section="hero">
+    <div class="hero-content" *ngIf="isVisible.hero" @fadeInUp>
+      <span class="hero-tag">Nuestra Historia</span>
+      <h1 class="hero-title">Donde la Elegancia se Encuentra con la Tradición</h1>
+      <p class="hero-subtitle">
+        Creando momentos inolvidables a través de joyas excepcionales desde hace más de una década
+      </p>
+    </div>
+  </section>
+
+  <!-- Story Section -->
+  <section class="story-section" data-section="story">
+    <div class="story-grid" *ngIf="isVisible.story">
+      <div class="story-image" @slideInLeft>
+        <img src="assets/images/joyero.png" alt="Joyería artesanal" class="story-img">
+      </div>
+      <div class="story-content" @slideInRight>
+        <h2>Nuestra Pasión por la Excelencia</h2>
+        <p>
+          Desde nuestros inicios, hemos estado dedicados a crear piezas únicas que cuentan historias. 
+          Cada joya que diseñamos lleva consigo años de experiencia, dedicación y amor por el arte de la joyería.
+        </p>
+        <p>
+          Nuestra misión es transformar momentos especiales en recuerdos eternos a través de 
+          diseños excepcionales que capturan la esencia de quien los lleva.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values Section -->
+  <section class="values-section" data-section="values">
+    <div *ngIf="isVisible.values" @fadeInUp>
+      <h2 class="section-title">Nuestros Valores</h2>
+      <div class="values-grid" @staggerCards>
+        <div class="value-card">
+          <div class="value-icon">💎</div>
+          <h3>Calidad Superior</h3>
+          <p>Utilizamos únicamente los mejores materiales y técnicas artesanales para garantizar piezas duraderas.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🎨</div>
+          <h3>Diseño Original</h3>
+          <p>Cada diseño es único y creado con atención meticulosa al detalle y las últimas tendencias.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">❤️</div>
+          <h3>Pasión por el Arte</h3>
+          <p>Amamos lo que hacemos y eso se refleja en cada pieza que creamos para nuestros clientes.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🤝</div>
+          <h3>Compromiso</h3>
+          <p>Nos comprometemos a ofrecer una experiencia excepcional desde el primer contacto.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class="team-section" data-section="team">
+    <div *ngIf="isVisible.team">
+      <h2 class="section-title" @fadeInUp>Nuestro Equipo</h2>
+      <p class="section-subtitle" @fadeIn>Artesanos dedicados a la perfección</p>
+      <div class="team-grid" @staggerCards>
+        <div class="team-card">
+          <div class="team-image">
+            <div class="image-placeholder">
+              <span class="placeholder-icon">👤</span>
+            </div>
+          </div>
+          <h3>María González</h3>
+          <p class="team-role">Diseñadora Principal</p>
+          <p class="team-description">15 años de experiencia en diseño de joyería fina</p>
+        </div>
+        <div class="team-card">
+          <div class="team-image">
+            <div class="image-placeholder">
+              <span class="placeholder-icon">👤</span>
+            </div>
+          </div>
+          <h3>Carlos Ramírez</h3>
+          <p class="team-role">Maestro Joyero</p>
+          <p class="team-description">Especialista en técnicas tradicionales y modernas</p>
+        </div>
+        <div class="team-card">
+          <div class="team-image">
+            <div class="image-placeholder">
+              <span class="placeholder-icon">👤</span>
+            </div>
+          </div>
+          <h3>Ana Martínez</h3>
+          <p class="team-role">Especialista en Gemas</p>
+          <p class="team-description">Experta en selección y certificación de piedras preciosas</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section" data-section="stats">
+    <div class="stats-grid" *ngIf="isVisible.stats" @staggerCards>
+      <div class="stat-item">
+        <div class="stat-number">10+</div>
+        <div class="stat-label">Años de Experiencia</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">5000+</div>
+        <div class="stat-label">Clientes Felices</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Diseños Únicos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Satisfacción Garantizada</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section" data-section="cta">
+    <div class="cta-content" *ngIf="isVisible.cta" @scaleIn>
+      <h2>¿Lista para Crear tu Joya Perfecta?</h2>
+      <p>Contáctanos y hagamos realidad la joya de tus sueños</p>
+      <button class="btn-cta" routerLink="/contacto">Contáctanos</button>
+    </div>
+  </section>
+</div>

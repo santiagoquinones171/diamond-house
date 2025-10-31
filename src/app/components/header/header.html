@@ -1,0 +1,32 @@
+<header class="elegant-header">
+  <div class="header-container">
+    <!-- Logo con imagen y texto elegante -->
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="Diamond House Logo" class="logo-image">
+      <span class="logo-text">Diamond House</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
+      <a routerLink="/nosotros" routerLinkActive="active">Nosotros</a>
+      <a routerLink="/productos" routerLinkActive="active">Productos</a>
+      <a routerLink="/contacto" routerLinkActive="active">Contacto</a>
+    </nav>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+      <input type="text" class="search-input" placeholder="Buscar joyas...">
+      <button class="search-btn">
+        <span class="search-icon">🔍</span>
+      </button>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>

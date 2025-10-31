@@ -1,0 +1,63 @@
+<div class="home-container" [@fadeIn]>
+  <!-- Hero Section (Sin imagen, centrado) -->
+  <section class="hero-section">
+    <div class="hero-content" [@fadeInUp]>
+      <span class="hero-subtitle" [@fadeIn]>Elegancia Atemporal</span>
+      <!-- El título ahora estará en cursiva por el CSS -->
+      <h1 class="hero-title" [@bounceIn]>Joyas que Cuentan tu Historia</h1>
+      <p class="hero-description" [@fadeIn]>
+        Descubre nuestra exclusiva colección de joyas artesanales, 
+        diseñadas con pasión y dedicación para momentos únicos.
+      </p>
+      <div class="hero-buttons" [@fadeIn]>
+        <button class="btn-explore" routerLink="/productos">Explorar Colección</button>
+        <button class="btn-contact" routerLink="/contacto">Contactar</button>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="features-grid" [@fadeInUp]>
+      <div class="feature-card" *ngFor="let item of [1,2,3]">
+        <div class="feature-icon"></div>
+        <h3>Diseños Únicos</h3>
+        <p>Cada pieza es creada con dedicación y atención al detalle</p>
+      </div>
+    </div>
+  </section>
+
+  ---
+
+  <!-- Collection Preview -->
+  <section class="collection-section">
+    <div class="section-header" [@fadeInUp]>
+      <h2>Colección Destacada</h2>
+      <p>Piezas seleccionadas especialmente para ti</p>
+    </div>
+    <div class="collection-grid">
+      <div class="collection-item" *ngFor="let jewel of featuredJewels" [@fadeInUp]>
+        <div class="collection-image">
+          <img [src]="'assets/images/' + jewel.imagen" class="img-fluid" [alt]="'Joya ' + jewel.nombre">
+          <!-- SE ELIMINA el div.collection-overlay para quitar el botón "Ver Detalles" -->
+        </div>
+        <div class="collection-info">
+          <h4>{{ jewel.nombre }}</h4>
+          <p class="collection-price">{{ jewel.precio }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  ---
+
+  <section class="cta-section">
+    <div class="cta-content" [@fadeInUp]>
+      <h2>¿Listo para Brillar?</h2>
+      <p>Encuentra la joya perfecta que refleje tu esencia</p>
+      <button class="btn-cta" routerLink="/productos">Ver Todas las Joyas</button>
+    </div>
+  </section>
+</div>

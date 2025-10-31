@@ -1,0 +1,33 @@
+/* Fondo animado estilo aurora */
+.background {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 20% 30%, #0ff 0%, transparent 70%),
+              radial-gradient(circle at 80% 70%, #0f0 0%, transparent 70%),
+              radial-gradient(circle at 50% 50%, #00f 0%, transparent 70%);
+  filter: blur(120px);
+  animation: aurora 10s ease-in-out infinite alternate;
+  z-index: -1;
+}
+
+/* Movimiento suave */
+@keyframes aurora {
+  0% {
+    background-position: 20% 30%, 80% 70%, 50% 50%;
+  }
+  50% {
+    background-position: 40% 20%, 60% 80%, 55% 45%;
+  }
+  100% {
+    background-position: 25% 40%, 75% 60%, 45% 55%;
+  }
+}
+
+/* Contenido centrado */
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh
+}

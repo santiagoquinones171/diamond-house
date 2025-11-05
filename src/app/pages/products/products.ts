@@ -5,9 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { trigger, transition, style, animate, keyframes, query, stagger } from '@angular/animations';
 
 interface Product {
+  id: number;
   name: string;
   description: string;
-  price: string;
+  price: number;
   icon: string;
   category: string;
   flipped: boolean;
@@ -79,14 +80,78 @@ export class Products implements OnInit {
   searchTerm = '';
   
   products: Product[] = [
-    { name: 'Anillo Eterno', description: 'Elegante anillo de compromiso con diamantes', price: '$1,299', icon: 'assets/images/ia1.png', category: 'Anillos', flipped: false },
-    { name: 'Anillo Zafiro', description: 'Anillo de compromiso con zafiro azul', price: '$1,499', icon: 'assets/images/ia2.png', category: 'Anillos', flipped: false },
-    { name: 'Collar Imperial', description: 'Collar de oro con piedras preciosas', price: '$899', icon: 'assets/images/ia3.png', category: 'Collares', flipped: false },
-    { name: 'Collar Perla', description: 'Collar de perlas naturales con cierre de oro', price: '$799', icon: 'assets/images/ia4.png', category: 'Collares', flipped: false },
-    { name: 'Aretes Luminosos', description: 'Aretes de oro blanco con zafiros', price: '$599', icon: 'assets/images/ia5.png', category: 'Aretes', flipped: false },
-    { name: 'Aretes Diamante', description: 'Aretes de oro amarillo con diamantes', price: '$699', icon: 'assets/images/ia6.png', category: 'Aretes', flipped: false },
-    { name: 'Pulsera Real', description: 'Pulsera de plata con detalles de oro', price: '$399', icon: 'assets/images/ia7.png', category: 'Pulseras', flipped: false },
-    { name: 'Pulsera Esmeralda', description: 'Pulsera de oro blanco con esmeraldas', price: '$999', icon: 'assets/images/ia8.png', category: 'Pulseras', flipped: false }
+    { 
+      id: 1,
+      name: 'Anillo Eterno', 
+      description: 'Elegante anillo de compromiso con diamantes', 
+      price: 1299000, 
+      icon: 'assets/images/joya1.png', 
+      category: 'Anillos', 
+      flipped: false 
+    },
+    { 
+      id: 2,
+      name: 'Anillo Zafiro', 
+      description: 'Anillo de compromiso con zafiro azul', 
+      price: 1499000, 
+      icon: 'assets/images/joya2.png', 
+      category: 'Anillos', 
+      flipped: false 
+    },
+    { 
+      id: 3,
+      name: 'Collar Imperial', 
+      description: 'Collar de oro con piedras preciosas', 
+      price: 8990000, 
+      icon: 'assets/images/joya3.png', 
+      category: 'Collares', 
+      flipped: false 
+    },
+    { 
+      id: 4,
+      name: 'Collar Perla', 
+      description: 'Collar de perlas naturales con cierre de oro', 
+      price: 7990000, 
+      icon: 'assets/images/joyero.png', 
+      category: 'Collares', 
+      flipped: false 
+    },
+    { 
+      id: 5,
+      name: 'Aretes Luminosos', 
+      description: 'Aretes de oro blanco con zafiros', 
+      price: 599000, 
+      icon: 'assets/images/ia1.png', 
+      category: 'Aretes', 
+      flipped: false 
+    },
+    { 
+      id: 6,
+      name: 'Aretes Diamante', 
+      description: 'Aretes de oro amarillo con diamantes', 
+      price: 6990000, 
+      icon: 'assets/images/ia2.png', 
+      category: 'Aretes', 
+      flipped: false 
+    },
+    { 
+      id: 7,
+      name: 'Pulsera Real', 
+      description: 'Pulsera de plata con detalles de oro', 
+      price: 3990000, 
+      icon: 'assets/images/ia3.png', 
+      category: 'Pulseras', 
+      flipped: false 
+    },
+    { 
+      id: 8,
+      name: 'Pulsera Esmeralda', 
+      description: 'Pulsera de oro blanco con esmeraldas', 
+      price: 9990000, 
+      icon: 'assets/images/ia4.png', 
+      category: 'Pulseras', 
+      flipped: false 
+    }
   ];
 
   filteredProducts: Product[] = [];
@@ -171,5 +236,18 @@ export class Products implements OnInit {
 
   toggleFlip(product: Product) {
     product.flipped = !product.flipped;
+  }
+
+  // TrackBy functions para mejorar el rendimiento del *ngFor
+  trackByProductId(index: number, product: Product): number {
+    return product.id;
+  }
+
+  trackByCategoryIndex(index: number, category: string): number {
+    return index;
+  }
+
+  trackByParticleIndex(index: number, particle: { x: number; y: number }): number {
+    return index;
   }
 }

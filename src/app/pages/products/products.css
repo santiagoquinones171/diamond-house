@@ -429,12 +429,38 @@
   margin-top: 1rem;
 }
 
+/* Estilos mejorados para el precio */
 .product-price {
-  font-size: 2rem;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
   font-weight: 700;
-  color: #a0825f;
-  text-shadow: 0 0 15px rgba(160, 130, 95, 0.6);
-  letter-spacing: 1px;
+  letter-spacing: -0.5px;
+}
+
+.currency-symbol {
+  font-size: 1.2em;
+  color: #d4af37;
+  font-weight: 600;
+}
+
+.price-amount {
+  font-size: 1.5em;
+  color: #d4af37;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+/* Animación al hover del card */
+.product-card:hover .product-price {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .currency-symbol,
+.product-card:hover .price-amount {
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
 }
 
 .btn-quick-view {
@@ -606,8 +632,7 @@
   width: 120%;
   height: 120%;
   border-radius: 50%;
-  background: radial-gradient(circle, transparent 60%, rgba(160, 130, 95, 0.1)
-100%);
+  background: radial-gradient(circle, transparent 60%, rgba(160, 130, 95, 0.1) 100%);
   animation: pulse-ring 3s ease-in-out infinite;
 }
 
@@ -722,5 +747,14 @@
   .search-container {
     max-width: 100%;
     padding: 0 1rem;
+  }
+
+  /* Responsive para precios en móviles */
+  .price-amount {
+    font-size: 1.3em;
+  }
+  
+  .currency-symbol {
+    font-size: 1.1em;
   }
 }

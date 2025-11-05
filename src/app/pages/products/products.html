@@ -2,7 +2,7 @@
   <!-- Hero Section with Particles -->
   <section class="products-hero" data-section="hero">
     <div class="particles">
-      <span class="particle" *ngFor="let p of particles" [style.left.%]="p.x" [style.top.%]="p.y"></span>
+      <span class="particle" *ngFor="let p of particles; trackBy: trackByParticleIndex" [style.left.%]="p.x" [style.top.%]="p.y"></span>
     </div>
     <div class="hero-content" *ngIf="isVisible.hero" @fadeInScale>
       <h1 class="glowing-title">Nuestra Colección Exclusiva</h1>
@@ -27,7 +27,7 @@
     <div class="filter-container" *ngIf="isVisible.filter" @slideInFromTop>
       <button 
         class="filter-btn" 
-        *ngFor="let category of categories; let i = index" 
+        *ngFor="let category of categories; let i = index; trackBy: trackByCategoryIndex" 
         [class.active]="selectedCategory === category"
         (click)="filterProducts(category)"
         [style.animation-delay.ms]="i * 80">
@@ -46,7 +46,7 @@
     <div class="products-grid" *ngIf="isVisible.products && filteredProducts.length > 0" @cardStagger>
       <div 
         class="product-card" 
-        *ngFor="let product of filteredProducts; let i = index">
+        *ngFor="let product of filteredProducts; trackBy: trackByProductId">
         
         <div class="card-inner" [class.flipped]="product.flipped">
           <!-- Front of Card -->
@@ -66,7 +66,10 @@
                 <span class="star" *ngFor="let star of [1,2,3,4,5]">⭐</span>
               </div>
               <div class="product-footer">
-                <span class="product-price">{{product.price}}</span>
+                <span class="product-price">
+                  <span class="currency-symbol">$</span>
+                  <span class="price-amount">{{ product.price | number:'1.0-0' }}</span>
+                </span>
                 <button class="btn-quick-view" (click)="toggleFlip(product)">
                   <span class="btn-icon"></span>
                   Ver más
@@ -112,7 +115,7 @@
     <div class="featured-container" *ngIf="isVisible.featured">
       <div class="featured-image" @slideInLeft>
         <div class="rotating-ring">
-          <img src="assets/images/ia1.png" alt="Anillo Imperial" class="ring-img">
+          <img src="assets/images/joya-hero-principal.jpg" alt="Anillo Imperial" class="ring-img">
         </div>
       </div>
       <div class="featured-content" @slideInRight>

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { trigger, transition, style, animate, keyframes, query, stagger } from '@angular/animations';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './contact.html',
   styleUrl: './contact.css',
   animations: [
@@ -66,15 +66,9 @@ import { trigger, transition, style, animate, keyframes, query, stagger } from '
   ]
 })
 export class Contact implements OnInit {
+  contactForm!: FormGroup;
   showSuccess = false;
-  
-  formData = {
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: ''
-  };
+  submitting = false;
 
   isVisible = {
     hero: false,
@@ -82,6 +76,22 @@ export class Contact implements OnInit {
     info: false,
     map: false
   };
+
+  constructor(private fb: FormBuilder) {
+    // Creamos el formulario con validaciones
+    this.contactForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.minLength(7)]],
+      subject: ['', [Validators.required, Validators.minLength(3)]],
+      message: ['', [Validators.required, Validators.minLength(10)]]
+    });
+  }
+
+  // Getter para acceder a los controles fácilmente
+  get f(): any {
+    return this.contactForm.controls;
+  }
 
   ngOnInit() {
     this.setupIntersectionObserver();
@@ -111,27 +121,61 @@ export class Contact implements OnInit {
     }, 100);
   }
 
-  onSubmit(event: Event) {
-    event.preventDefault();
-    
-    // Aquí puedes agregar la lógica para enviar el formulario
-    console.log('Form submitted:', this.formData);
-    
-    // Mostrar mensaje de éxito
-    this.showSuccess = true;
-    
-    // Resetear formulario
-    this.formData = {
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: ''
+  cancelar() {
+    if (this.submitting) return;
+    this.contactForm.reset();
+  }
+
+  enviar(): void {
+    // Mostrar errores visuales
+    this.contactForm.markAllAsTouched();
+
+    // Si hay errores, no continuar
+    if (this.contactForm.invalid) {
+      return;
+    }
+
+    this.submitting = true;
+
+    // Preparamos los datos (trim sencillo)
+    const payload = {
+      nombre: (this.f.name.value || '').toString().trim(),
+      email: (this.f.email.value || '').toString().trim(),
+      telefono: (this.f.phone.value || '').toString().trim(),
+      asunto: (this.f.subject.value || '').toString().trim(),
+      mensaje: (this.f.message.value || '').toString().trim(),
+      createdAt: new Date().toISOString()
     };
-    
-    // Ocultar mensaje después de 3 segundos
-    setTimeout(() => {
-      this.showSuccess = false;
-    }, 3000);
+
+    try {
+      // Descargamos JSON en el navegador
+      const text = JSON.stringify(payload, null, 2);
+      const blob = new Blob([text], { type: 'application/json' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'formulario-contacto.json';
+      // necesario en algunos navegadores
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      // Mostrar mensaje de éxito
+      this.showSuccess = true;
+
+      // Reset simple
+      this.contactForm.reset();
+
+      // Ocultar mensaje después de 3 segundos
+      setTimeout(() => {
+        this.showSuccess = false;
+      }, 3000);
+    } catch (err) {
+      console.error('Error al descargar JSON:', err);
+      alert('No fue posible descargar el archivo.');
+    } finally {
+      this.submitting = false;
+    }
   }
 }

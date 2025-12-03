@@ -19,7 +19,10 @@
           <p>Responderemos en menos de 24 horas</p>
         </div>
 
-        <form class="contact-form" (submit)="onSubmit($event)" @staggerInputs>
+        <!-- FORMULARIO REACTIVO -->
+        <form [formGroup]="contactForm" (ngSubmit)="enviar()" class="contact-form" novalidate @staggerInputs>
+          
+          <!-- CAMPO: NOMBRE -->
           <div class="form-group">
             <label for="name">
               <span class="label-icon">👤</span>
@@ -29,11 +32,24 @@
               type="text" 
               id="name" 
               placeholder="Ingresa tu nombre"
-              [(ngModel)]="formData.name"
-              name="name"
-              required>
+              formControlName="name"
+              class="form-control"
+              [class.is-invalid]="f.name.invalid && f.name.touched"
+              [class.is-valid]="f.name.valid && f.name.touched">
+            
+            <div class="invalid-feedback" *ngIf="f.name.touched && f.name.errors">
+              <div *ngIf="f.name.errors?.['required']">
+                <span class="error-icon">⚠️</span>
+                El nombre es obligatorio.
+              </div>
+              <div *ngIf="f.name.errors?.['minlength']">
+                <span class="error-icon">⚠️</span>
+                Mínimo {{ f.name.errors?.['minlength']?.requiredLength }} caracteres.
+              </div>
+            </div>
           </div>
 
+          <!-- CAMPO: EMAIL -->
           <div class="form-group">
             <label for="email">
               <span class="label-icon">📧</span>
@@ -43,11 +59,24 @@
               type="email" 
               id="email" 
               placeholder="tu@email.com"
-              [(ngModel)]="formData.email"
-              name="email"
-              required>
+              formControlName="email"
+              class="form-control"
+              [class.is-invalid]="f.email.invalid && f.email.touched"
+              [class.is-valid]="f.email.valid && f.email.touched">
+            
+            <div class="invalid-feedback" *ngIf="f.email.touched && f.email.errors">
+              <div *ngIf="f.email.errors?.['required']">
+                <span class="error-icon">⚠️</span>
+                El correo es obligatorio.
+              </div>
+              <div *ngIf="f.email.errors?.['email']">
+                <span class="error-icon">⚠️</span>
+                Formato de correo inválido.
+              </div>
+            </div>
           </div>
 
+          <!-- CAMPO: TELÉFONO -->
           <div class="form-group">
             <label for="phone">
               <span class="label-icon">📱</span>
@@ -57,10 +86,20 @@
               type="tel" 
               id="phone" 
               placeholder="+57 123 456 7890"
-              [(ngModel)]="formData.phone"
-              name="phone">
+              formControlName="phone"
+              class="form-control"
+              [class.is-invalid]="f.phone.invalid && f.phone.touched"
+              [class.is-valid]="f.phone.valid && f.phone.touched">
+            
+            <div class="invalid-feedback" *ngIf="f.phone.touched && f.phone.errors">
+              <div *ngIf="f.phone.errors?.['minlength']">
+                <span class="error-icon">⚠️</span>
+                Mínimo {{ f.phone.errors?.['minlength']?.requiredLength }} dígitos.
+              </div>
+            </div>
           </div>
 
+          <!-- CAMPO: ASUNTO -->
           <div class="form-group">
             <label for="subject">
               <span class="label-icon">✨</span>
@@ -68,9 +107,10 @@
             </label>
             <select 
               id="subject"
-              [(ngModel)]="formData.subject"
-              name="subject"
-              required>
+              formControlName="subject"
+              class="form-control"
+              [class.is-invalid]="f.subject.invalid && f.subject.touched"
+              [class.is-valid]="f.subject.valid && f.subject.touched">
               <option value="">Selecciona un asunto</option>
               <option value="consulta">Consulta General</option>
               <option value="pedido">Realizar un Pedido</option>
@@ -78,8 +118,20 @@
               <option value="reparacion">Reparación</option>
               <option value="otro">Otro</option>
             </select>
+            
+            <div class="invalid-feedback" *ngIf="f.subject.touched && f.subject.errors">
+              <div *ngIf="f.subject.errors?.['required']">
+                <span class="error-icon">⚠️</span>
+                El asunto es obligatorio.
+              </div>
+              <div *ngIf="f.subject.errors?.['minlength']">
+                <span class="error-icon">⚠️</span>
+                Mínimo {{ f.subject.errors?.['minlength']?.requiredLength }} caracteres.
+              </div>
+            </div>
           </div>
 
+          <!-- CAMPO: MENSAJE -->
           <div class="form-group">
             <label for="message">
               <span class="label-icon">💬</span>
@@ -89,15 +141,34 @@
               id="message" 
               rows="5" 
               placeholder="Cuéntanos sobre la joya de tus sueños..."
-              [(ngModel)]="formData.message"
-              name="message"
-              required></textarea>
+              formControlName="message"
+              class="form-control"
+              [class.is-invalid]="f.message.invalid && f.message.touched"
+              [class.is-valid]="f.message.valid && f.message.touched"></textarea>
+            
+            <div class="invalid-feedback" *ngIf="f.message.touched && f.message.errors">
+              <div *ngIf="f.message.errors?.['required']">
+                <span class="error-icon">⚠️</span>
+                El mensaje es obligatorio.
+              </div>
+              <div *ngIf="f.message.errors?.['minlength']">
+                <span class="error-icon">⚠️</span>
+                Mínimo {{ f.message.errors?.['minlength']?.requiredLength }} caracteres.
+              </div>
+            </div>
           </div>
 
-          <button type="submit" class="btn-submit" @buttonPulse>
-            <span class="btn-text">Enviar Mensaje</span>
-            <span class="btn-icon">→</span>
-          </button>
+          <!-- BOTONES -->
+          <div class="form-buttons">
+            <button type="submit" class="btn-submit" [disabled]="submitting" @buttonPulse>
+              <span class="btn-text">{{ submitting ? 'Enviando...' : 'Enviar Mensaje' }}</span>
+              <span class="btn-icon">→</span>
+            </button>
+            
+            <button type="button" class="btn-cancel" (click)="cancelar()" [disabled]="submitting">
+              <span class="btn-text">Cancelar</span>
+            </button>
+          </div>
         </form>
       </div>
 
@@ -179,7 +250,7 @@
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.8158764265656!2d-74.07209368523683!3d4.624335596619944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9bfd2da6cb29%3A0x239d635520a33914!2zQm9nb3TDoSwgQm9nb3Rh!5e0!3m2!1ses!2sco!4v1234567890123!5m2!1ses!2sco" 
         width="100%" 
         height="100%" 
-        [style.border]="'0'" 
+        style="border:0" 
         allowfullscreen 
         loading="lazy">
       </iframe>

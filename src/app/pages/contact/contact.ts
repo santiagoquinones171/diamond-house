@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { trigger, transition, style, animate, keyframes, query, stagger } from '@angular/animations';
 
 @Component({
@@ -78,19 +78,87 @@ export class Contact implements OnInit {
   };
 
   constructor(private fb: FormBuilder) {
-    // Creamos el formulario con validaciones
+    // Creamos el formulario con validaciones mejoradas
     this.contactForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.minLength(7)]],
+      phone: ['', [
+        Validators.required, // Hacer obligatorio
+        Validators.minLength(7),
+        Validators.maxLength(20),
+        this.phoneValidator // Validador personalizado
+      ]],
       subject: ['', [Validators.required, Validators.minLength(3)]],
       message: ['', [Validators.required, Validators.minLength(10)]]
     });
   }
 
+  // Validador personalizado para teléfono
+  phoneValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    
+    if (!value) {
+      return null; // Si está vacío, lo maneja 'required'
+    }
+
+    // Remover espacios, guiones y paréntesis para validar
+    const cleanValue = value.toString().replace(/[\s\-\(\)]/g, '');
+    
+    // Validar que solo contenga números y opcionalmente '+'
+    const validChars = /^[\+]?[0-9]+$/;
+    if (!validChars.test(cleanValue)) {
+      return { invalidCharacters: true };
+    }
+
+    // Validar longitud (entre 7 y 15 dígitos sin contar el +)
+    const digitsOnly = cleanValue.replace(/[\+]/g, '');
+    if (digitsOnly.length < 7 || digitsOnly.length > 15) {
+      return { invalidLength: true };
+    }
+
+    // Validación específica para Colombia (opcional)
+    // Descomentar si solo quieres aceptar números colombianos
+    /*
+    const colombianPattern = /^(\+?57)?3[0-9]{9}$/; // Celular colombiano
+    const fijoPattern = /^[0-9]{7,10}$/; // Fijo
+    
+    if (!colombianPattern.test(cleanValue) && !fijoPattern.test(cleanValue)) {
+      return { invalidColombianPhone: true };
+    }
+    */
+
+    return null; // Teléfono válido
+  }
+
   // Getter para acceder a los controles fácilmente
   get f(): any {
     return this.contactForm.controls;
+  }
+
+  // Método para obtener mensajes de error específicos del teléfono
+  getPhoneErrorMessage(): string {
+    const phoneControl = this.f.phone;
+    
+    if (phoneControl.hasError('required')) {
+      return 'El teléfono es obligatorio';
+    }
+    if (phoneControl.hasError('minlength')) {
+      return 'El teléfono debe tener al menos 7 dígitos';
+    }
+    if (phoneControl.hasError('maxlength')) {
+      return 'El teléfono no puede tener más de 20 dígitos';
+    }
+    if (phoneControl.hasError('invalidCharacters')) {
+      return 'El teléfono solo puede contener números, espacios, guiones y paréntesis';
+    }
+    if (phoneControl.hasError('invalidLength')) {
+      return 'El teléfono debe tener entre 7 y 15 dígitos';
+    }
+    if (phoneControl.hasError('invalidColombianPhone')) {
+      return 'Ingrese un número de teléfono colombiano válido';
+    }
+    
+    return '';
   }
 
   ngOnInit() {
@@ -132,12 +200,16 @@ export class Contact implements OnInit {
 
     // Si hay errores, no continuar
     if (this.contactForm.invalid) {
+      // Opcional: mostrar alerta con errores específicos
+      if (this.f.phone.invalid) {
+        console.log('Error en teléfono:', this.getPhoneErrorMessage());
+      }
       return;
     }
 
     this.submitting = true;
 
-    // Preparamos los datos (trim sencillo)
+    // Preparamos los datos (trim sencillo y limpiar teléfono)
     const payload = {
       nombre: (this.f.name.value || '').toString().trim(),
       email: (this.f.email.value || '').toString().trim(),
@@ -155,7 +227,6 @@ export class Contact implements OnInit {
       const link = document.createElement('a');
       link.href = url;
       link.download = 'formulario-contacto.json';
-      // necesario en algunos navegadores
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

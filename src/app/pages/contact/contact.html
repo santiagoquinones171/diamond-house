@@ -76,27 +76,53 @@
             </div>
           </div>
 
-          <!-- CAMPO: TELÉFONO -->
+          <!-- CAMPO: TELÉFONO - ACTUALIZADO -->
           <div class="form-group">
             <label for="phone">
               <span class="label-icon">📱</span>
-              Teléfono
+              Teléfono *
             </label>
             <input 
               type="tel" 
               id="phone" 
-              placeholder="+57 123 456 7890"
+              placeholder="+57 300 123 4567"
               formControlName="phone"
               class="form-control"
               [class.is-invalid]="f.phone.invalid && f.phone.touched"
               [class.is-valid]="f.phone.valid && f.phone.touched">
             
+            <!-- Mensajes de error actualizados -->
             <div class="invalid-feedback" *ngIf="f.phone.touched && f.phone.errors">
+              <div *ngIf="f.phone.errors?.['required']">
+                <span class="error-icon">⚠️</span>
+                El teléfono es obligatorio.
+              </div>
               <div *ngIf="f.phone.errors?.['minlength']">
                 <span class="error-icon">⚠️</span>
-                Mínimo {{ f.phone.errors?.['minlength']?.requiredLength }} dígitos.
+                El teléfono debe tener al menos {{ f.phone.errors?.['minlength']?.requiredLength }} dígitos.
+              </div>
+              <div *ngIf="f.phone.errors?.['maxlength']">
+                <span class="error-icon">⚠️</span>
+                El teléfono no puede tener más de {{ f.phone.errors?.['maxlength']?.requiredLength }} dígitos.
+              </div>
+              <div *ngIf="f.phone.errors?.['invalidCharacters']">
+                <span class="error-icon">⚠️</span>
+                El teléfono solo puede contener números, espacios, guiones y paréntesis.
+              </div>
+              <div *ngIf="f.phone.errors?.['invalidLength']">
+                <span class="error-icon">⚠️</span>
+                El teléfono debe tener entre 7 y 15 dígitos.
+              </div>
+              <div *ngIf="f.phone.errors?.['invalidColombianPhone']">
+                <span class="error-icon">⚠️</span>
+                Ingrese un número de teléfono colombiano válido.
               </div>
             </div>
+            
+            <!-- Ayuda visual opcional -->
+            <small class="form-text text-muted" *ngIf="!f.phone.touched || f.phone.valid">
+              Ejemplo: +57 300 123 4567 o 3001234567
+            </small>
           </div>
 
           <!-- CAMPO: ASUNTO -->

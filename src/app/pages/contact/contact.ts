@@ -83,7 +83,7 @@ export class Contact implements OnInit {
       name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [
-        Validators.required, // Hacer obligatorio
+        Validators.required, // OBLIGATORIO ✓
         Validators.minLength(7),
         Validators.maxLength(20),
         this.phoneValidator // Validador personalizado
